@@ -22,5 +22,10 @@ public class Wishlist {
     private User user;
 
     @ManyToMany
+    @JoinTable(
+            name = "wishlist_products",
+            joinColumns = @JoinColumn(name = "wishlist_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
     private Set<Product> products = new HashSet<>();
 }

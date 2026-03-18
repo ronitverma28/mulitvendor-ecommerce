@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "users")
 public class User {
 
     @Id
@@ -34,4 +35,7 @@ public class User {
     @ManyToMany
     @JsonIgnore
     private Set<Coupon> usedCoupons = new HashSet<>();
+
+    @OneToMany
+    private Set<PaymentOrder> paymentOrders = new HashSet<>();
 }

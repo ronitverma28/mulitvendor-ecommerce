@@ -28,13 +28,11 @@ public class Review {
     @ElementCollection
     private List<String> productImages;
 
-    @JsonIgnore
     @ManyToOne
-    @Column(nullable = false)
+    @JoinColumn(name = "product_id")
     private Product product;
 
     @ManyToOne
-    @Column(nullable = false)
     private User user;
 
     @Column(nullable = false)
