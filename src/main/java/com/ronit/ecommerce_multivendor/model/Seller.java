@@ -1,59 +1,43 @@
 package com.ronit.ecommerce_multivendor.model;
 
 import com.ronit.ecommerce_multivendor.model.enums.AccountStatus;
-import com.ronit.ecommerce_multivendor.model.enums.UserRole;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.util.List;
+import lombok.*;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "sellers")
 public class Seller {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
+    private User user;
+
+    @Column(nullable = false)
     private String sellerName;
 
+    @Column(nullable = false)
     private String mobileNumber;
 
-    @Column(unique = true, nullable = false)
-    private String email;
+    @Column(nullable = false, unique = true)
+    private String GSTIN;
 
-    private String password;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "business_details_id")
+    @Embedded
     private BusinessDetails businessDetails;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "bank_details_id")
+    @Embedded
     private BankDetails bankDetails;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "pickup_address_id")
     private Address pickupAddress;
 
-    private String GSTIN;
-
-    private UserRole role= UserRole.ROLE_SELLER;
-
-    private boolean isEmailVerified=false;
-
+    @Enumerated(EnumType.STRING)
     private AccountStatus accountStatus = AccountStatus.PENDING_VERIFICATION;
-
-    @OneToOne(mappedBy = "seller")
-    @JsonIgnore
-    private User user;
-
-    @OneToMany(mappedBy = "seller")
-    @JsonIgnore
-    private List<Product> products;
 }

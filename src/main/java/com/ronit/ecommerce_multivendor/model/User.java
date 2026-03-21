@@ -4,10 +4,7 @@ import com.ronit.ecommerce_multivendor.model.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -21,32 +18,40 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String email;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Column(nullable = false)
     private String password;
 
     private String firstName;
-
     private String lastName;
-
     private String mobileNumber;
 
+    @Enumerated(EnumType.STRING)
     @Builder.Default
     private UserRole role = UserRole.ROLE_CUSTOMER;
 
-    @OneToOne
-    @JoinColumn(name = "seller_id")
+    // 🔥 FIXED (inverse side)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private Seller seller;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Set<Address> addresses = new HashSet<>();
 
+    // 🔥 FIXED (correct mappedBy)
     @ManyToMany
+    @JoinTable(
+            name = "user_coupons",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "coupon_id")
+    )
     @JsonIgnore
     private Set<Coupon> usedCoupons = new HashSet<>();
 
@@ -54,11 +59,11 @@ public class User {
     @JsonIgnore
     private Set<PaymentOrder> paymentOrders = new HashSet<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Set<Review> reviews = new HashSet<>();
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Cart cart;
 
@@ -66,7 +71,7 @@ public class User {
     @JsonIgnore
     private Set<Order> orders = new HashSet<>();
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Wishlist wishlist;
 }
