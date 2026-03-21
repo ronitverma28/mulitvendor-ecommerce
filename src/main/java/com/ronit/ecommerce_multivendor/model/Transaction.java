@@ -18,12 +18,15 @@ public class Transaction {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "customer_id")
     private User customer;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "order_id")
     private Order order;
 
     @ManyToOne
+    @JoinColumn(name = "seller_id")
     private Seller seller;
 
     private LocalDateTime date = LocalDateTime.now();

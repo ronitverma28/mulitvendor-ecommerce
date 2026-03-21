@@ -16,6 +16,7 @@ public class SellerReport {
     private Long id;
 
     @OneToOne
+    @JoinColumn(name = "seller_id")
     private Seller seller;
 
     private Long totalEarnings = 0L;

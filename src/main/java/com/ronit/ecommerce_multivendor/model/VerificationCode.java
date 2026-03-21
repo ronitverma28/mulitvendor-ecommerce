@@ -20,8 +20,10 @@ public class VerificationCode {
     private String email;
 
     @OneToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     @OneToOne
+    @JoinColumn(name = "seller_id")
     private Seller seller;
 }

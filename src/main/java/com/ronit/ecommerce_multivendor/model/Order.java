@@ -2,6 +2,7 @@ package com.ronit.ecommerce_multivendor.model;
 
 import com.ronit.ecommerce_multivendor.model.enums.OrderStatus;
 import com.ronit.ecommerce_multivendor.model.enums.PaymentStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,6 +26,7 @@ public class Order {
     private String orderId;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     private Long sellerId;
@@ -33,10 +35,12 @@ public class Order {
     private List<OrderItem> orderItems = new ArrayList<>();
 
     @ManyToOne
+    @JoinColumn(name = "shipping_address_id")
     private Address shippingAddress;
 
-    @Embedded
-    private PaymentDetails paymentDetails = new PaymentDetails();
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "payment_details_id")
+    private PaymentDetails paymentDetails;
 
     private double totalMrpPrice;
 
@@ -53,4 +57,8 @@ public class Order {
     private LocalDateTime orderDate = LocalDateTime.now();
 
     private LocalDateTime deliverDate = orderDate.plusDays(7);
+
+    @OneToMany(mappedBy = "order")
+    @JsonIgnore
+    private List<Transaction> transactions;
 }

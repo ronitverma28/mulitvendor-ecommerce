@@ -39,9 +39,11 @@ public class Product {
     private int numRating;
 
     @ManyToOne
+    @JoinColumn(name = "category_id")
     private Category category;
 
     @ManyToOne
+    @JoinColumn(name = "seller_id")
     private Seller seller;
 
     private LocalDateTime createdAt;
