@@ -8,6 +8,7 @@ import com.ronit.ecommerce_multivendor.repository.UserRepository;
 import com.ronit.ecommerce_multivendor.repository.VerificationCodeRepository;
 import com.ronit.ecommerce_multivendor.service.EmailService;
 import com.ronit.ecommerce_multivendor.service.OtpService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -129,8 +130,8 @@ public class OtpServiceImpl implements OtpService {
         return String.format("%06d", new SecureRandom().nextInt(1000000));
     }
 
-    // 🔥 Runs every 5 minutes
     @Scheduled(fixedRate = 5 * 60 * 1000)
+    @Transactional
     public void cleanExpiredAndUsedOtps() {
 
         int deletedCount = verificationCodeRepository
