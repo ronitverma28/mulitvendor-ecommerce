@@ -1,4 +1,14 @@
 package com.ronit.ecommerce_multivendor.service;
 
-public class AuthService {
+import com.ronit.ecommerce_multivendor.dto.request.LoginRequest;
+import com.ronit.ecommerce_multivendor.dto.response.LoginResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+@Service
+public interface AuthService {
+    LoginResponse login(LoginRequest loginRequest);
+
+
+
 }

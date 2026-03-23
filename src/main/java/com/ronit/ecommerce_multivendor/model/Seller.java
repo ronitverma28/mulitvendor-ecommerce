@@ -26,7 +26,7 @@ public class Seller {
     private String mobileNumber;
 
     @Column(nullable = false, unique = true)
-    private String GSTIN;
+    private String gstin;
 
     @Embedded
     private BusinessDetails businessDetails;

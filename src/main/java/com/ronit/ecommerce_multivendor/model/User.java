@@ -1,5 +1,6 @@
 package com.ronit.ecommerce_multivendor.model;
 
+import com.ronit.ecommerce_multivendor.model.enums.AccountStatus;
 import com.ronit.ecommerce_multivendor.model.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -36,7 +37,15 @@ public class User {
     @Builder.Default
     private UserRole role = UserRole.ROLE_CUSTOMER;
 
-    // 🔥 FIXED (inverse side)
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private AccountStatus accountStatus = AccountStatus.PENDING_VERIFICATION;
+
+    // 🔥 NEW: Verification Codes relation (VERY IMPORTANT)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private Set<VerificationCode> verificationCodes = new HashSet<>();
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Seller seller;
@@ -45,7 +54,6 @@ public class User {
     @JsonIgnore
     private Set<Address> addresses = new HashSet<>();
 
-    // 🔥 FIXED (correct mappedBy)
     @ManyToMany
     @JoinTable(
             name = "user_coupons",
@@ -55,7 +63,7 @@ public class User {
     @JsonIgnore
     private Set<Coupon> usedCoupons = new HashSet<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Set<PaymentOrder> paymentOrders = new HashSet<>();
 
@@ -67,7 +75,7 @@ public class User {
     @JsonIgnore
     private Cart cart;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Set<Order> orders = new HashSet<>();
 
