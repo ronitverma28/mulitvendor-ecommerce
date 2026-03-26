@@ -6,7 +6,6 @@ import com.ronit.ecommerce_multivendor.exception.DuplicateResourceException;
 import com.ronit.ecommerce_multivendor.exception.ResourceNotFoundException;
 import com.ronit.ecommerce_multivendor.mapper.UserMapper;
 import com.ronit.ecommerce_multivendor.model.User;
-import com.ronit.ecommerce_multivendor.model.VerificationCode;
 import com.ronit.ecommerce_multivendor.repository.UserRepository;
 import com.ronit.ecommerce_multivendor.repository.VerificationCodeRepository;
 import com.ronit.ecommerce_multivendor.service.AuthService;
@@ -17,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor

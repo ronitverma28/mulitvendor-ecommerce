@@ -3,7 +3,6 @@ package com.ronit.ecommerce_multivendor.dto.response;
 import com.ronit.ecommerce_multivendor.model.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.hibernate.boot.internal.Abstract;
 
 @Data
 @AllArgsConstructor
